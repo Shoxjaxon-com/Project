@@ -42,7 +42,7 @@ function InvoicesCard() {
             name={value.clientName}
             total={value.total}
             date={value.createdAt}
-            id={value.id}
+            // id={value.id}
           />
         );
       })}

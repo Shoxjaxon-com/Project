@@ -10,45 +10,49 @@ import { useEffect, useState } from "react";
 import { Button, buttonVariants } from "./ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { queryGenerator } from "../lib/utils";
-import { PlusIcon } from "lucide-react";
-import { CirclePlus } from 'lucide-react';
-import { ChevronDown } from 'lucide-react';
+import { CirclePlus, ChevronDown } from 'lucide-react';
 import { useAppStore } from "../lib/Zustand";
-
+import CreateInvoice from './CreateInvoice';
 
 function Header() {
-  const {setFilter}  = useAppStore()
-  let [items, setItems] = useState({
+  const { setFilter } = useAppStore();
+
+  const [items, setItems] = useState({
     draft: false,
     paid: false,
-    pending: false, 
+    pending: false,
   });
+
+  const [showForm, setShowForm] = useState(false); // <-- local state for modal
+
   function handleChange(key) {
-    
     setItems((prev) => {
       return { ...prev, [key]: !prev[key] };
     });
   }
-  useEffect(()=>{
-   const res =  queryGenerator(items)
-    setFilter(res)
-   console.log(res);
-   
-  },[items.draft, items.paid, items.pending])
+
+  useEffect(() => {
+    const res = queryGenerator(items);
+    setFilter(res);
+    console.log(res);
+  }, [items.draft, items.paid, items.pending]);
+
   return (
     <header>
       <div className="base-container flex items-center justify-between">
         <div>
-          <h2>Invoices</h2>
-          <p>There are 7 total invoices</p>
+          <h2 className="text-2xl font-bold">Invoices</h2>
+          <p className="text-sm text-gray-500">There are 7 total invoices</p>
         </div>
-        <div className="flex gap-10">
+        <div className="flex gap-4">
           <DropdownMenu>
             <DropdownMenuTrigger>
-              <Button className="bg-white text-black">Filter by status <ChevronDown className="text-[#7C5DFA]"/> </Button>
+              <Button className="bg-white text-black">
+                Filter by status <ChevronDown className="ml-2 text-[#7C5DFA]" />
+              </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
+              <DropdownMenuLabel>Status</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <div className="flex flex-col">
                 {Object.entries(items).map(([key, value]) => {
@@ -61,25 +65,37 @@ function Header() {
                       htmlFor={key}
                     >
                       <Checkbox
-                          
-                        onCheckedChange={()=>handleChange(key)}
-                        value={key}
+                        onCheckedChange={() => handleChange(key)}
                         checked={value}
                         id={key}
                       />
-                      {key}
+                      <span className="ml-2">{key}</span>
                     </label>
                   );
                 })}
               </div>
             </DropdownMenuContent>
           </DropdownMenu>
-           <Button className="bg-[#7C5DFA] rounded-3xl">
-                  <CirclePlus />
+
+          {/* New Invoice Button */}
+          <Button
+            className="bg-[#7C5DFA] text-white rounded-3xl px-6"
+            onClick={() => setShowForm(true)}
+          >
+            <CirclePlus className="mr-2" />
             New Invoice
-            </Button>
+          </Button>
         </div>
       </div>
+
+      {/* CreateInvoice Panel */}
+      {showForm && (
+        <CreateInvoice
+          openCreateInvoice={showForm}
+          setOpenCreateInvoice={setShowForm}
+          type="create"
+        />
+      )}
     </header>
   );
 }

@@ -10,24 +10,33 @@ import StatusBudget from "./StatusBudget";
 import { useNavigate } from "react-router-dom";
 
 function MyCard({
-  invoiceId= "RT3080",
-  createdAt = "Due  19 Aug 2021",
-  clientName = "Jensen Huang",
+  id = "RT3080",
+  date = "Due  19 Aug 2021",
+  name = "Jensen Huang",
   total = "1,800.90",
   status = "draft",
-  id = "1"
+  ke = "1",
 }) {
-  const navigate = useNavigate()
+
+  let navigate = useNavigate();
+  function handleDetails(id) {
+    console.log(id);
+    navigate(`/details/${id}`);
+  }
+
   return (
-    <div className="mt-3">
-      <Card onClick={()=>{
-        navigate(`${id}`)
-      }} className="border-2 border-transparent hover:border-[#7C5DFA] transition-colors">
+    <div
+      onClick={(e) => {
+        handleDetails(ke);
+      }}
+      key={ke}
+    >
+      <Card className="mt-7 dark:bg-[#1E2139] border-2 hover:border-blue-300 cursor-pointer transition-all">
         <CardHeader>
           <div className="flex justify-between items-center">
-            <CardTitle>#{invoiceId}</CardTitle>
-            <CardDescription>{createdAt}</CardDescription>
-            <span>{clientName}</span>
+            <CardTitle>#{id}</CardTitle>
+            <CardDescription>{date}</CardDescription>
+            <span>{name}</span>
             <span>£{total}</span>
             <StatusBudget status={status} />
           </div>

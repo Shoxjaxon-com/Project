@@ -1,24 +1,43 @@
 import React from "react";
-import { Button } from "@/components/ui/button";
-import StatusBudget from "./components/StatusBudget";
-import MyCard from "./components/MyCard";
-import Home from "./pages/Home";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import Home from "./pages/Home";
 import Details from "./pages/Details";
+import LoginPage from "./pages/Login";
+import ProtectedRoute from "./components/ProtectedRoute";
+
+const router = createBrowserRouter([
+  {
+    path: "/login",
+    element: <LoginPage />,
+  },
+  {
+    path: "/",
+    element: (
+      <ProtectedRoute>
+        <Home />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/details/:id",
+    element: (
+      <ProtectedRoute>
+        <Details />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/edit/:id", 
+    element: (
+      <ProtectedRoute>
+        <div className="p-10 text-white text-2xl">Edit Page (Create your component)</div>
+      </ProtectedRoute>
+    ),
+  },
+]);
+
 function App() {
-  const routs = createBrowserRouter([
-    {
-      path : "/",
-      element: <Home />
-    },
-    {
-      path: "/:id",
-      element: <Details />
-    },
-  ])
-  return (
-      <RouterProvider router={routs} />
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;

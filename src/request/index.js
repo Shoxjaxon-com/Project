@@ -11,10 +11,13 @@ export async function getInvoices(route = "/invoices", query = "") {
   }
 }
 
-export async function getInvoice(id) {
-  let req = await fetch(baseUrl + `/${id}`);
+export async function getInvoice(route='/invoices',id) {
+  let req = await fetch(baseUrl + route+ `/${id}`);
+  
   if (req.status === 200) {
     let result = await req.json();
+    console.log(result);
+    
     return result;
   } else {
     return new Error("Nimadur hato keti");
