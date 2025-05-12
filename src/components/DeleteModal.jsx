@@ -1,6 +1,6 @@
 import React from "react";
 
-function DeleteModal({ isOpen, onClose, onConfirm, invoiceId }) {
+function DeleteModal({ isOpen, onClose, onConfirm, onEdit, invoiceId }) {
   if (!isOpen) return null;
 
   return (
@@ -18,6 +18,12 @@ function DeleteModal({ isOpen, onClose, onConfirm, invoiceId }) {
             className="bg-[#F9FAFE] dark:bg-[#252945] text-[#7E88C3] rounded-3xl py-2 px-5 text-sm font-medium"
           >
             Cancel
+          </button>
+          <button
+            onClick={onEdit}
+            className="bg-[#7C5DFA] text-white rounded-3xl py-2 px-5 text-sm font-medium hover:bg-[#9277FF] transition"
+          >
+            Edit
           </button>
           <button
             onClick={onConfirm}

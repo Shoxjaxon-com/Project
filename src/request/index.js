@@ -2,7 +2,7 @@ let baseUrl = import.meta.env.VITE_BASE_URL;
 console.log(baseUrl);
 
 export async function getInvoices(route = "/invoices", query = "") {
-  let req = await fetch(baseUrl+ route + (query ? `?status=${query}`: "" ));
+  let req = await fetch(baseUrl + route + (query ? `?status=${query}` : ""));
   if (req.status === 200) {
     let result = await req.json();
     return result.data;
@@ -11,8 +11,8 @@ export async function getInvoices(route = "/invoices", query = "") {
   }
 }
 
-export async function getInvoice(route='/invoices',id) {
-  let req = await fetch(baseUrl + route+ `/${id}`);
+export async function getInvoice(route = '/invoices', id) {
+  let req = await fetch(baseUrl + route + `/${id}`);
   
   if (req.status === 200) {
     let result = await req.json();
@@ -25,7 +25,7 @@ export async function getInvoice(route='/invoices',id) {
 }
 
 export async function deleteById(id) {
-  let req = await fetch(baseUrl + `/${id}`, {
+  let req = await fetch(baseUrl + `/invoices/` + `${id}`, {
     method: "DELETE",
   });
   if (req.status === 200) {
@@ -36,12 +36,12 @@ export async function deleteById(id) {
 }
 
 export async function updateById(id, newData) {
-  let req = await fetch(baseUrl + `/${id}`, {
+  let req = await fetch(baseUrl + `/invoices/` + `${id}`, {
     method: "PATCH",
     body: JSON.stringify(newData),
   });
   if (req.status === 200) {
-    let result = req.json();
+    let result = await req.json();
     return result;
   } else {
     return new Error("Nimadur hato keti");
@@ -49,12 +49,15 @@ export async function updateById(id, newData) {
 }
 
 export async function addInvoice(data) {
-  let req = await fetch(baseUrl, {
+  let req = await fetch(baseUrl + "/invoices", {
     method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
     body: JSON.stringify(data),
   });
   if (req.status === 200) {
-    let result = req.json();
+    let result = await req.json();
     return result;
   } else {
     return new Error("Nimadur hato keti");
